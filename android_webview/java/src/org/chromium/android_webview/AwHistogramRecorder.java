@@ -61,7 +61,8 @@ public class AwHistogramRecorder {
         WebViewCallbackType.GET_DEFAULT_VIDEO_POSTER,
         WebViewCallbackType.ON_RENDER_PROCESS_GONE,
         WebViewCallbackType.ON_SCALE_CHANGED,
-        WebViewCallbackType.ON_RECEIVED_THEME_COLOR
+        WebViewCallbackType.ON_RECEIVED_THEME_COLOR,
+        WebViewCallbackType.ON_VIEWPORT_FIT_CHANGED
     })
     public @interface WebViewCallbackType {
         // These values are used for UMA. Don't reuse or reorder values.
@@ -107,7 +108,8 @@ public class AwHistogramRecorder {
         int ON_RENDER_PROCESS_GONE = 38;
         int ON_SCALE_CHANGED = 39;
         int ON_RECEIVED_THEME_COLOR = 40;
-        int NUM_ENTRIES = 41;
+        int ON_VIEWPORT_FIT_CHANGED = 41;
+        int NUM_ENTRIES = 42;
     }
 
     public static void recordCallbackInvocation(@WebViewCallbackType int result) {

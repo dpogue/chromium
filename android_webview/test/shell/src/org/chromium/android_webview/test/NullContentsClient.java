@@ -255,4 +255,7 @@ public class NullContentsClient extends AwContentsClient {
 
     @Override
     public void onReceivedThemeColor(Color color) {}
+
+    @Override
+    public void onViewportFitChanged(@ViewportFitType int viewport) {}
 }

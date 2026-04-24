@@ -138,6 +138,7 @@ public class AwContentsClientCallbackHelper {
     private static final int MSG_ON_FORM_RESUBMISSION = 14;
     private static final int MSG_ON_SAFE_BROWSING_HIT = 15;
     private static final int MSG_ON_RECEIVED_THEME_COLOR = 16;
+    private static final int MSG_ON_VIEWPORT_FIT_CHANGED = 17;
 
     // Minimum period allowed between consecutive onNewPicture calls, to rate-limit the callbacks.
     private static final long ON_NEW_PICTURE_MIN_PERIOD_MILLIS = 500;
@@ -278,6 +279,11 @@ public class AwContentsClientCallbackHelper {
                         mContentsClient.onReceivedThemeColor((Color) msg.obj);
                         break;
                     }
+                case MSG_ON_VIEWPORT_FIT_CHANGED:
+                    {
+                        mContentsClient.onViewportFitChanged(msg.arg1);
+                        break;
+                    }
                 default:
                     throw new IllegalStateException(
                             "AwContentsClientCallbackHelper: unhandled message " + msg.what);
@@ -393,6 +399,10 @@ public class AwContentsClientCallbackHelper {
 
     public void postOnReceivedThemeColor(Color color) {
         mHandler.sendMessage(mHandler.obtainMessage(MSG_ON_RECEIVED_THEME_COLOR, color));
+    }
+
+    public void postOnViewportFitChanged(int viewport) {
+        mHandler.sendMessage(mHandler.obtainMessage(MSG_ON_VIEWPORT_FIT_CHANGED, viewport, 0));
     }
 
     void removeCallbacksAndMessages() {
