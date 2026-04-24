@@ -158,6 +158,7 @@ public class SupportLibWebViewChromiumFactory implements WebViewProviderFactoryB
                 Features.NAVIGATION_GET_NAVIGATION_START_UPTIME_MILLIS + Features.DEV_SUFFIX,
                 Features.WEB_MESSAGE_SHARED_ARRAY_BUFFER + Features.DEV_SUFFIX,
                 Features.THEME_COLOR_CALLBACK + Features.DEV_SUFFIX,
+                Features.VIEWPORT_FIT_CALLBACK + Features.DEV_SUFFIX,
                 // Add new features above. New features must include `+ Features.DEV_SUFFIX`
                 // when they're initially added (this can be removed in a future CL). The one
                 // exception is when adding a new method to an interface that extends from
