@@ -3174,6 +3174,12 @@ public class AwContents implements SmartClipProvider {
         return isDestroyed(WARN) ? null : mWebContents.getTitle();
     }
 
+    public Color getThemeColor() {
+        if (TRACE) Log.i(TAG, "%s getThemeColor", this);
+        int color = isDestroyed(WARN) ? Color.TRANSPARENT : mWebContents.getThemeColor();
+        return Color.valueOf(color);
+    }
+
     /**
      * @see android.webkit.WebView#clearHistory()
      */
