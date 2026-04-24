@@ -411,7 +411,7 @@ public class TabWebContentsObserver extends TabWebContentsUserData {
         }
 
         @Override
-        public void viewportFitChanged(@WebContentsObserver.ViewportFitType int value) {
+        public void viewportFitChanged(@ViewportFit.EnumType int value) {
             DisplayCutoutTabHelper.from(mTab).setViewportFit(value);
             DisplayCutoutTabHelper.from(mTab).setSafeAreaConstraint(value == ViewportFit.CONTAIN);
         }

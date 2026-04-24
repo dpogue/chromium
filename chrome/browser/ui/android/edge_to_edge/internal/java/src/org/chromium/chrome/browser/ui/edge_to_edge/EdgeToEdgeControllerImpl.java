@@ -28,6 +28,7 @@ import org.chromium.base.ObserverList;
 import org.chromium.base.ValueChangedCallback;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -621,7 +622,7 @@ public class EdgeToEdgeControllerImpl
         mWebContentsObserver =
                 new WebContentsObserver(tab.getWebContents()) {
                     @Override
-                    public void viewportFitChanged(@WebContentsObserver.ViewportFitType int value) {
+                    public void viewportFitChanged(@ViewportFit.EnumType int value) {
                         drawToEdge(
                                 EdgeToEdgeUtils.tabSupportsTopEdgeToEdge(mCurrentTab, value),
                                 EdgeToEdgeUtils.isPageOptedIntoBottomEdgeToEdge(

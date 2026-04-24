@@ -98,4 +98,13 @@ public class SupportLibWebChromeClientAdapter {
 
         mWebChromeClient.onReceivedThemeColor(webView, color);
     }
+
+    public void onViewportFitChanged(
+            WebView webView, @WebChromeClientBoundaryInterface.ViewportFitType int viewportFit) {
+        if (mWebChromeClient == null || !isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK)) {
+            return;
+        }
+
+        mWebChromeClient.onViewportFitChanged(webView, viewportFit);
+    }
 }

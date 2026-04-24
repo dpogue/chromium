@@ -32,7 +32,6 @@ import org.chromium.chrome.browser.ui.native_page.NativePage;
 import org.chromium.components.browser_ui.display_cutout.DisplayCutoutController;
 import org.chromium.components.browser_ui.display_cutout.DisplayCutoutController.SafeAreaInsetsTracker;
 import org.chromium.components.embedder_support.util.UrlUtilities;
-import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.display.DisplayUtil;
 
@@ -546,7 +545,7 @@ public class EdgeToEdgeUtils {
      * @param value The new viewport-fit value of the root frame.
      */
     static boolean isPageOptedIntoBottomEdgeToEdge(
-            @Nullable Tab tab, @WebContentsObserver.ViewportFitType int value) {
+            @Nullable Tab tab, @ViewportFit.EnumType int value) {
         if (tab == null || tab.isNativePage()) {
             return isNativeTabDrawingToBottomEdge(tab);
         }
@@ -766,8 +765,7 @@ public class EdgeToEdgeUtils {
      * @param tab The Tab to check.
      * @param value The new viewport-fit value of the root frame.
      */
-    static boolean tabSupportsTopEdgeToEdge(
-            @Nullable Tab tab, @WebContentsObserver.ViewportFitType int value) {
+    static boolean tabSupportsTopEdgeToEdge(@Nullable Tab tab, @ViewportFit.EnumType int value) {
         if (!isEdgeToEdgeRefactorEnabled() || tab == null) {
             return false;
         }
