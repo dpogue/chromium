@@ -4,9 +4,13 @@
 
 package org.chromium.support_lib_boundary;
 
+import android.graphics.Color;
+import android.webkit.WebView;
+
 import org.jspecify.annotations.NullMarked;
 
 /** Boundary interface for WebChromeClientCompat. */
 @NullMarked
 public interface WebChromeClientBoundaryInterface extends FeatureFlagHolderBoundaryInterface {
+    void onReceivedThemeColor(WebView view, Color color);
 }
