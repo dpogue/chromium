@@ -62,6 +62,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
 import org.chromium.content_public.browser.util.DialogTypeRecorder;
+import org.chromium.support_lib_boundary.util.Features;
 import org.chromium.support_lib_callback_glue.SupportLibWebChromeClientAdapter;
 
 import java.lang.ref.WeakReference;
@@ -475,8 +476,27 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
     }
 
     /**
-     * Returns true if a method with a given name and parameters is declared in a subclass
-     * of a given baseclass.
+     * @see ContentViewClient#onReceivedThemeColor(Color)
+     */
+    @Override
+    public void onReceivedThemeColor(Color color) {
+        try (TraceEvent event =
+                TraceEvent.scoped("WebView.APICallback.WebViewClient.onReceivedThemeColor")) {
+            if (TRACE) Log.i(TAG, "onReceivedThemeColor=\"" + color.toString() + "\"");
+            AwHistogramRecorder.recordCallbackInvocation(
+                    AwHistogramRecorder.WebViewCallbackType.ON_RECEIVED_THEME_COLOR);
+
+            if (mSupportLibChromeClient.isFeatureAvailable(Features.THEME_COLOR_CALLBACK)) {
+                mSupportLibChromeClient.onReceivedThemeColor(getWebView(), color);
+            }
+
+            // Otherwise, the API does not exist, so do nothing.
+        }
+    }
+
+    /**
+     * Returns true if a method with a given name and parameters is declared in a subclass of a
+     * given baseclass.
      */
     private static <T> boolean isMethodDeclaredInSubClass(
             Class<T> baseClass,
