@@ -550,4 +550,7 @@ public class Features {
     // Page.snapshotState
     public static final String NAVIGATION_LISTENER_NAVIGATION_STATE =
             "NAVIGATION_LISTENER_NAVIGATION_STATE";
+
+    // WebChromeClientCompat.onViewportFitChanged
+    public static final String VIEWPORT_FIT_CALLBACK = "VIEWPORT_FIT_CALLBACK";
 }

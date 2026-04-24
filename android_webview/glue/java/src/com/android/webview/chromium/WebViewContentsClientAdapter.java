@@ -62,6 +62,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
 import org.chromium.content_public.browser.util.DialogTypeRecorder;
+import org.chromium.content_public.browser.WebContentsObserver.ViewportFitType;
 import org.chromium.support_lib_boundary.util.Features;
 import org.chromium.support_lib_callback_glue.SupportLibWebChromeClientAdapter;
 
@@ -488,6 +489,25 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
 
             if (mSupportLibChromeClient.isFeatureAvailable(Features.THEME_COLOR_CALLBACK)) {
                 mSupportLibChromeClient.onReceivedThemeColor(getWebView(), color);
+            }
+
+            // Otherwise, the API does not exist, so do nothing.
+        }
+    }
+
+    /**
+     * @see ContentViewClient#onViewportFitChanged(int)
+     */
+    @Override
+    public void onViewportFitChanged(@ViewportFitType int viewport) {
+        try (TraceEvent event =
+                TraceEvent.scoped("WebView.APICallback.WebViewClient.onViewportFitChanged")) {
+            if (TRACE) Log.i(TAG, "onViewportFitChanged=\"" + viewport + "\"");
+            AwHistogramRecorder.recordCallbackInvocation(
+                    AwHistogramRecorder.WebViewCallbackType.ON_VIEWPORT_FIT_CHANGED);
+
+            if (mSupportLibChromeClient.isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK)) {
+                mSupportLibChromeClient.onViewportFitChanged(getWebView(), viewport);
             }
 
             // Otherwise, the API does not exist, so do nothing.
