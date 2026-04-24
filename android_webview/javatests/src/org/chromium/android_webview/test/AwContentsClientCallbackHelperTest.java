@@ -23,6 +23,7 @@ import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.UseParametersRunnerFactory;
 
 import org.chromium.android_webview.AwContents;
+import org.chromium.android_webview.AwContentsClient.ViewportFitType;
 import org.chromium.android_webview.AwContentsClientCallbackHelper;
 import org.chromium.android_webview.AwWebResourceError;
 import org.chromium.android_webview.AwWebResourceRequest;
@@ -31,6 +32,7 @@ import org.chromium.android_webview.test.TestAwContentsClient.OnLoadResourceHelp
 import org.chromium.android_webview.test.TestAwContentsClient.OnReceivedErrorHelper;
 import org.chromium.android_webview.test.TestAwContentsClient.OnReceivedLoginRequestHelper;
 import org.chromium.android_webview.test.TestAwContentsClient.OnReceivedThemeColorHelper;
+import org.chromium.android_webview.test.TestAwContentsClient.OnViewportFitChangedHelper;
 import org.chromium.android_webview.test.TestAwContentsClient.PictureListenerHelper;
 import org.chromium.android_webview.test.util.CommonResources;
 import org.chromium.base.test.util.Batch;
@@ -316,5 +318,68 @@ public class AwContentsClientCallbackHelperTest extends AwParameterizedTest {
         themeColorHelper.waitForCallback(onThemeColorChangeCount);
         Assert.assertNotNull(themeColorHelper.getColor());
         Assert.assertEquals(Color.TRANSPARENT, themeColorHelper.getColor().toArgb());
+    }
+
+    @Test
+    @Feature({"AndroidWebView"})
+    @SmallTest
+    public void testOnViewportFitChanged() throws Exception {
+        AwTestContainerView testContainerView =
+                mActivityTestRule.createAwTestContainerViewOnMainSync(mContentsClient);
+        AwContents awContents = testContainerView.getAwContents();
+
+        AwActivityTestRule.enableJavaScriptOnUiThread(awContents);
+
+        OnViewportFitChangedHelper viewportFitHelper =
+                mContentsClient.getOnViewportFitChangedHelper();
+        int onViewportFitChangeCount = viewportFitHelper.getCallCount();
+
+        try (TestWebServer webServer = TestWebServer.start()) {
+            final String pageUrl =
+                    webServer.setResponse(
+                            "/index.html",
+                            CommonResources.makeHtmlPageFrom(
+                                    "<meta name=\"viewport\" content=\"viewport-fit=cover\">",
+                                    "Body"),
+                            CommonResources.getTextHtmlHeaders(true));
+
+            mActivityTestRule.loadUrlSync(
+                    awContents, mContentsClient.getOnPageFinishedHelper(), pageUrl);
+        }
+
+        viewportFitHelper.waitForCallback(onViewportFitChangeCount);
+        Assert.assertEquals(ViewportFitType.COVER, viewportFitHelper.getViewportFit());
+
+        onViewportFitChangeCount = viewportFitHelper.getCallCount();
+        final String removeCode =
+                """
+                document.querySelector('meta[name="viewport"]')?.setAttribute("content", "initial-scale=1.0");
+                """;
+        mActivityTestRule.executeJavaScriptAndWaitForResult(
+                awContents, mContentsClient, removeCode);
+
+        viewportFitHelper.waitForCallback(onViewportFitChangeCount);
+        Assert.assertEquals(ViewportFitType.AUTO, viewportFitHelper.getViewportFit());
+
+        onViewportFitChangeCount = viewportFitHelper.getCallCount();
+        final String containCode =
+                """
+                document.querySelector('meta[name="viewport"]')?.setAttribute("content", "viewport-fit=contain");
+                """;
+        mActivityTestRule.executeJavaScriptAndWaitForResult(
+                awContents, mContentsClient, containCode);
+
+        viewportFitHelper.waitForCallback(onViewportFitChangeCount);
+        Assert.assertEquals(ViewportFitType.CONTAIN, viewportFitHelper.getViewportFit());
+
+        onViewportFitChangeCount = viewportFitHelper.getCallCount();
+        final String autoCode =
+                """
+                document.querySelector('meta[name="viewport"]')?.setAttribute("content", "viewport-fit=auto");
+                """;
+        mActivityTestRule.executeJavaScriptAndWaitForResult(awContents, mContentsClient, autoCode);
+
+        viewportFitHelper.waitForCallback(onViewportFitChangeCount);
+        Assert.assertEquals(ViewportFitType.AUTO, viewportFitHelper.getViewportFit());
     }
 }

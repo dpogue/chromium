@@ -96,4 +96,10 @@ public class SupportLibWebChromeClientAdapter {
         assert isFeatureAvailable(Features.THEME_COLOR_CALLBACK);
         mWebChromeClient.onReceivedThemeColor(webView, color);
     }
+
+    public void onViewportFitChanged(WebView webView, int value) {
+        if (mWebChromeClient == null) return;
+        assert isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK);
+        mWebChromeClient.onViewportFitChanged(webView, value);
+    }
 }

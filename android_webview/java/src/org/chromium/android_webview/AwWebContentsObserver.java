@@ -17,6 +17,7 @@ import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.content_public.browser.Page;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
+import org.chromium.content_public.browser.WebContentsObserver.ViewportFitType;
 import org.chromium.content_public.common.ContentUrlConstants;
 import org.chromium.net.NetError;
 import org.chromium.ui.base.PageTransition;
@@ -306,6 +307,13 @@ public class AwWebContentsObserver extends WebContentsObserver {
         if (client == null) return;
 
         client.getCallbackHelper().postOnReceivedThemeColor(awContents.getThemeColor());
+    }
+
+    @Override
+    public void viewportFitChanged(@ViewportFitType int value) {
+        AwContentsClient client = mAwContentsClient.get();
+        if (client == null) return;
+        client.getCallbackHelper().postOnViewportFitChanged(value);
     }
 
     /** Callback that triggers {@code onPageCommitVisible} and {@code onNavigationVisible}. */

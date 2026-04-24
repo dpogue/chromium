@@ -518,4 +518,7 @@ public class Features {
 
     // WebChromeClientCompat#onReceivedThemeColor
     public static final String THEME_COLOR_CALLBACK = "THEME_COLOR_CALLBACK";
+
+    // WebChromeClientCompat#onViewportFitChanged
+    public static final String VIEWPORT_FIT_CALLBACK = "VIEWPORT_FIT_CALLBACK";
 }

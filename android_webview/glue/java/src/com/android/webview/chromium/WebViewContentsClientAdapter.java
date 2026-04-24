@@ -495,6 +495,25 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
     }
 
     /**
+     * @see ContentViewClient#onViewportFitChanged(int)
+     */
+    @Override
+    public void onViewportFitChanged(@AwContentsClient.ViewportFitType int viewport) {
+        try (TraceEvent event =
+                TraceEvent.scoped("WebView.APICallback.WebViewClient.onViewportFitChanged")) {
+            if (TRACE) Log.i(TAG, "onViewportFitChanged=\"" + viewport + "\"");
+            AwHistogramRecorder.recordCallbackInvocation(
+                    AwHistogramRecorder.WebViewCallbackType.ON_VIEWPORT_FIT_CHANGED);
+
+            if (mSupportLibChromeClient.isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK)) {
+                mSupportLibChromeClient.onViewportFitChanged(getWebView(), viewport);
+            }
+
+            // Otherwise, the API does not exist, so do nothing.
+        }
+    }
+
+    /**
      * Returns true if a method with a given name and parameters is declared in a subclass of a
      * given baseclass.
      */
