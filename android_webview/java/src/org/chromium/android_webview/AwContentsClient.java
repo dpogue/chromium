@@ -33,6 +33,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordHistogram;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
 import org.chromium.content_public.common.ContentUrlConstants;
@@ -700,4 +701,6 @@ public abstract class AwContentsClient {
     public abstract boolean onRenderProcessGone(AwRenderProcessGoneDetail detail);
 
     public abstract void onReceivedThemeColor(Color color);
+
+    public abstract void onViewportFitChanged(@ViewportFit.EnumType int viewport);
 }

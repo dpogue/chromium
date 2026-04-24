@@ -19,12 +19,12 @@ import org.chromium.base.test.util.Criteria;
 import org.chromium.base.test.util.CriteriaHelper;
 import org.chromium.base.test.util.CriteriaNotSatisfiedException;
 import org.chromium.base.test.util.TestThreadUtils;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.fullscreen.FullscreenOptions;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.display_cutout.DisplayCutoutController;
-import org.chromium.content_public.browser.WebContentsObserver;
 import org.chromium.content_public.browser.test.util.DOMUtils;
 import org.chromium.content_public.browser.test.util.JavaScriptUtils;
 
@@ -282,7 +282,7 @@ public class DisplayCutoutTestRule extends ExternalResource {
     }
 
     /** Set the viewport-fit value using internal APIs. */
-    public void setViewportFitInternal(@WebContentsObserver.ViewportFitType int value) {
+    public void setViewportFitInternal(@ViewportFit.EnumType int value) {
         ThreadUtils.runOnUiThreadBlocking(() -> mTestController.setViewportFit(value));
     }
 

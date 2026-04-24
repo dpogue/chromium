@@ -60,8 +60,10 @@ import org.chromium.base.TraceEvent;
 import org.chromium.base.metrics.ScopedSysTraceEvent;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
 import org.chromium.content_public.browser.util.DialogTypeRecorder;
+import org.chromium.support_lib_boundary.WebChromeClientBoundaryInterface;
 import org.chromium.support_lib_boundary.util.Features;
 import org.chromium.support_lib_callback_glue.SupportLibWebChromeClientAdapter;
 
@@ -488,6 +490,42 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
 
             if (mSupportLibChromeClient.isFeatureAvailable(Features.THEME_COLOR_CALLBACK)) {
                 mSupportLibChromeClient.onReceivedThemeColor(getWebView(), color);
+            }
+
+            // Otherwise, the API does not exist, so do nothing.
+        }
+    }
+
+    /**
+     * @see AwContentsClient#onViewportFitChanged(int)
+     */
+    @Override
+    public void onViewportFitChanged(@ViewportFit.EnumType int viewport) {
+        try (TraceEvent event =
+                TraceEvent.scoped("WebView.APICallback.WebViewClient.onViewportFitChanged")) {
+            if (TRACE) Log.i(TAG, "onViewportFitChanged=\"" + viewport + "\"");
+            AwHistogramRecorder.recordCallbackInvocation(
+                    AwHistogramRecorder.WebViewCallbackType.ON_VIEWPORT_FIT_CHANGED);
+
+            if (mSupportLibChromeClient.isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK)) {
+                @WebChromeClientBoundaryInterface.ViewportFitType
+                int value =
+                        switch (viewport) {
+                            case ViewportFit.CONTAIN ->
+                                    WebChromeClientBoundaryInterface.ViewportFitType.CONTAIN;
+                            case ViewportFit.COVER ->
+                                    WebChromeClientBoundaryInterface.ViewportFitType.COVER;
+                            // Report UA forced cover as just cover:
+                            case ViewportFit.COVER_FORCED_BY_USER_AGENT ->
+                                    WebChromeClientBoundaryInterface.ViewportFitType.COVER;
+                            case ViewportFit.AUTO ->
+                                    WebChromeClientBoundaryInterface.ViewportFitType.AUTO;
+                            default ->
+                                    throw new IllegalArgumentException(
+                                            "Unexpected viewport-fit value for WebView");
+                        };
+
+                mSupportLibChromeClient.onViewportFitChanged(getWebView(), value);
             }
 
             // Otherwise, the API does not exist, so do nothing.

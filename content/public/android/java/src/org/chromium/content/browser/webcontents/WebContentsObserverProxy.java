@@ -17,6 +17,7 @@ import org.chromium.base.ObserverList;
 import org.chromium.base.ObserverList.RewindableIterator;
 import org.chromium.base.TerminationStatus;
 import org.chromium.base.ThreadUtils;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.content_public.browser.GlobalRenderFrameHostId;
@@ -466,7 +467,7 @@ class WebContentsObserverProxy extends WebContentsObserver {
 
     @Override
     @CalledByNative
-    public void viewportFitChanged(@WebContentsObserver.ViewportFitType int value) {
+    public void viewportFitChanged(@ViewportFit.EnumType int value) {
         handleObserverCall();
         Iterator<WebContentsObserver> observersIterator = mObservers.iterator();
         for (; observersIterator.hasNext(); ) {
