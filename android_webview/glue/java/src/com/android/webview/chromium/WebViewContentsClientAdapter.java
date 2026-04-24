@@ -62,6 +62,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
 import org.chromium.content_public.browser.util.DialogTypeRecorder;
+import org.chromium.support_lib_callback_glue.SupportLibWebChromeClientAdapter;
 
 import java.lang.ref.WeakReference;
 import java.security.Principal;
@@ -89,6 +90,8 @@ import java.util.WeakHashMap;
 class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
     // The WebChromeClient instance that was passed to WebView.setContentViewClient().
     private WebChromeClient mWebChromeClient;
+    // Some callbacks will be forwarded to this client for apps using the support library.
+    private final SupportLibWebChromeClientAdapter mSupportLibChromeClient;
     // The listener receiving find-in-page API results.
     private WebView.FindListener mFindListener;
     // The listener receiving notifications of screen updates.
@@ -113,6 +116,7 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
     @SuppressWarnings("HandlerLeak")
     WebViewContentsClientAdapter(AwContents awContents, WebViewDelegate webViewDelegate) {
         super(awContents, webViewDelegate);
+        mSupportLibChromeClient = new SupportLibWebChromeClientAdapter();
         try (ScopedSysTraceEvent event =
                 ScopedSysTraceEvent.scoped("WebView.APICallback.WebViewClient.constructor")) {
             // See //android_webview/docs/how-does-on-create-window-work.md for more details.
@@ -152,6 +156,7 @@ class WebViewContentsClientAdapter extends SharedWebViewContentsClientAdapter {
 
     void setWebChromeClient(WebChromeClient client) {
         mWebChromeClient = client;
+        mSupportLibChromeClient.setWebChromeClient(client);
     }
 
     WebChromeClient getWebChromeClient() {
