@@ -35,6 +35,7 @@ import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
+import org.chromium.content_public.browser.WebContentsObserver.ViewportFitType;
 import org.chromium.content_public.common.ContentUrlConstants;
 
 import java.lang.annotation.Retention;
@@ -700,4 +701,6 @@ public abstract class AwContentsClient {
     public abstract boolean onRenderProcessGone(AwRenderProcessGoneDetail detail);
 
     public abstract void onReceivedThemeColor(Color color);
+
+    public abstract void onViewportFitChanged(@ViewportFitType int viewport);
 }

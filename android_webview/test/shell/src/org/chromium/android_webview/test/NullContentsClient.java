@@ -31,6 +31,7 @@ import org.chromium.base.Callback;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
+import org.chromium.content_public.browser.WebContentsObserver.ViewportFitType;
 
 import java.security.Principal;
 
@@ -255,4 +256,7 @@ public class NullContentsClient extends AwContentsClient {
 
     @Override
     public void onReceivedThemeColor(Color color) {}
+
+    @Override
+    public void onViewportFitChanged(@ViewportFitType int viewport) {}
 }

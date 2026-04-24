@@ -63,7 +63,8 @@ public class DisplayCutoutController implements InsetObserver.WindowInsetObserve
     private @Nullable Window mWindow;
 
     /** The current viewport fit value. */
-    private @WebContentsObserver.ViewportFitType int mViewportFit = ViewportFit.AUTO;
+    private @WebContentsObserver.ViewportFitType int mViewportFit =
+            WebContentsObserver.ViewportFitType.AUTO;
 
     /**
      * The current {@link InsetObserver} that we are attached to. This can be null if we have not

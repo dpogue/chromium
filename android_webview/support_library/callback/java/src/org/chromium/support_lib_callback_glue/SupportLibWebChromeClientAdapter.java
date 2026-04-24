@@ -15,6 +15,7 @@ import org.jspecify.annotations.NullMarked;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.metrics.ScopedSysTraceEvent;
 import org.chromium.support_lib_boundary.WebChromeClientBoundaryInterface;
+import org.chromium.support_lib_boundary.WebChromeClientBoundaryInterface.ViewportFitType;
 import org.chromium.support_lib_boundary.util.BoundaryInterfaceReflectionUtil;
 import org.chromium.support_lib_boundary.util.Features;
 
@@ -97,5 +98,13 @@ public class SupportLibWebChromeClientAdapter {
         }
 
         mWebChromeClient.onReceivedThemeColor(webView, color);
+    }
+
+    public void onViewportFitChanged(WebView webView, @ViewportFitType int value) {
+        if (mWebChromeClient == null || !isFeatureAvailable(Features.VIEWPORT_FIT_CALLBACK)) {
+            return;
+        }
+
+        mWebChromeClient.onViewportFitChanged(webView, value);
     }
 }

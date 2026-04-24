@@ -558,4 +558,7 @@ public class Features {
     // WebViewCompat.setGoogleAccountsCallback
     // WebViewCompat.clearGoogleAccountsCallback
     public static final String GOOGLE_ACCOUNTS_CALLBACK = "GOOGLE_ACCOUNTS_CALLBACK_V1";
+
+    // WebChromeClientCompat.onViewportFitChanged
+    public static final String VIEWPORT_FIT_CALLBACK = "VIEWPORT_FIT_CALLBACK";
 }

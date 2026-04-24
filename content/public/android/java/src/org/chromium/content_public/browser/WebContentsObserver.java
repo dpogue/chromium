@@ -246,12 +246,16 @@ public abstract class WebContentsObserver {
     public void didToggleFullscreenModeForTab(boolean enteredFullscreen, boolean willCauseResize) {}
 
     /**
-     * The Viewport Fit Type passed to viewportFitChanged. This is mirrored
-     * in an enum in display_cutout.mojom.
+     * The Viewport Fit Type passed to viewportFitChanged. This is mirrored in an enum in
+     * display_cutout.mojom.
      */
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ViewportFit.AUTO, ViewportFit.CONTAIN, ViewportFit.COVER})
-    public @interface ViewportFitType {}
+    @IntDef({ViewportFitType.AUTO, ViewportFitType.CONTAIN, ViewportFitType.COVER})
+    public @interface ViewportFitType {
+        int AUTO = ViewportFit.AUTO;
+        int CONTAIN = ViewportFit.CONTAIN;
+        int COVER = ViewportFit.COVER;
+    }
 
     /**
      * Called when the viewport fit of the Web Contents changes.

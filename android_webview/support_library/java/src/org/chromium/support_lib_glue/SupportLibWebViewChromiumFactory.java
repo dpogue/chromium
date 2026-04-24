@@ -165,6 +165,7 @@ public class SupportLibWebViewChromiumFactory
                 WebFeatures.WEB_SURFACE,
                 Features.ADD_QUIC_HINTS_WILDCARDS,
                 Features.THEME_COLOR_CALLBACK + Features.DEV_SUFFIX,
+                Features.VIEWPORT_FIT_CALLBACK + Features.DEV_SUFFIX,
                 Features.NAVIGATION_LISTENER_NAVIGATION_STATE,
                 Features.HEADER_INTERCEPTOR + Features.DEV_SUFFIX,
                 Features.GOOGLE_ACCOUNTS_CALLBACK,
