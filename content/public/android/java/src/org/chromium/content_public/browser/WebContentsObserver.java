@@ -4,8 +4,6 @@
 
 package org.chromium.content_public.browser;
 
-import androidx.annotation.IntDef;
-
 import org.chromium.base.TerminationStatus;
 import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.build.annotations.NullMarked;
@@ -13,9 +11,6 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.mojom.VirtualKeyboardMode;
 import org.chromium.url.GURL;
-
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 /**
  * This class receives callbacks that act as hooks for various a native web contents events related
@@ -246,19 +241,11 @@ public abstract class WebContentsObserver {
     public void didToggleFullscreenModeForTab(boolean enteredFullscreen, boolean willCauseResize) {}
 
     /**
-     * The Viewport Fit Type passed to viewportFitChanged. This is mirrored
-     * in an enum in display_cutout.mojom.
-     */
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({ViewportFit.AUTO, ViewportFit.CONTAIN, ViewportFit.COVER})
-    public @interface ViewportFitType {}
-
-    /**
      * Called when the viewport fit of the Web Contents changes.
      *
      * @param value the new viewport fit value.
      */
-    public void viewportFitChanged(@ViewportFitType int value) {}
+    public void viewportFitChanged(@ViewportFit.EnumType int value) {}
 
     /**
      * Called when the safe area constraint of the Web Contents changes.

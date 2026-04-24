@@ -8,6 +8,7 @@ import org.chromium.android_webview.AwContents.VisualStateCallback;
 import org.chromium.android_webview.common.Lifetime;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.blink.mojom.ViewportFit;
 import org.chromium.content_public.browser.GlobalRenderFrameHostId;
 import org.chromium.content_public.browser.LifecycleState;
 import org.chromium.content_public.browser.NavigationHandle;
@@ -258,6 +259,13 @@ public class AwWebContentsObserver extends WebContentsObserver {
         if (client == null) return;
 
         client.getCallbackHelper().postOnReceivedThemeColor(awContents.getThemeColor());
+    }
+
+    @Override
+    public void viewportFitChanged(@ViewportFit.EnumType int value) {
+        AwContentsClient client = mAwContentsClient.get();
+        if (client == null) return;
+        client.getCallbackHelper().postOnViewportFitChanged(value);
     }
 
     /** Callback that triggers {@code onPageCommitVisible} and {@code onNavigationVisible}. */
