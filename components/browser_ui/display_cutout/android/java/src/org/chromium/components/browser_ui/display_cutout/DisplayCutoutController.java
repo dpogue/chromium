@@ -63,7 +63,7 @@ public class DisplayCutoutController implements InsetObserver.WindowInsetObserve
     private @Nullable Window mWindow;
 
     /** The current viewport fit value. */
-    private @WebContentsObserver.ViewportFitType int mViewportFit = ViewportFit.AUTO;
+    private @ViewportFit.EnumType int mViewportFit = ViewportFit.AUTO;
 
     /**
      * The current {@link InsetObserver} that we are attached to. This can be null if we have not
@@ -331,7 +331,7 @@ public class DisplayCutoutController implements InsetObserver.WindowInsetObserve
      *
      * @param value The new viewport fit value.
      */
-    public void setViewportFit(@WebContentsObserver.ViewportFitType int value) {
+    public void setViewportFit(@ViewportFit.EnumType int value) {
         Log.i(TAG, "setViewportFit: %s", value);
         mSafeAreaInsetsTracker.setIsViewportFitCover(shouldTreatViewportFitAsCover(value));
 
@@ -594,8 +594,7 @@ public class DisplayCutoutController implements InsetObserver.WindowInsetObserve
         return displayMode == DisplayMode.FULLSCREEN || displayMode == DisplayMode.STANDALONE;
     }
 
-    private static boolean shouldTreatViewportFitAsCover(
-            @WebContentsObserver.ViewportFitType int value) {
+    private static boolean shouldTreatViewportFitAsCover(@ViewportFit.EnumType int value) {
         return value == ViewportFit.COVER || value == ViewportFit.COVER_FORCED_BY_USER_AGENT;
     }
 
