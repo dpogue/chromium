@@ -4,7 +4,9 @@
 
 package org.chromium.support_lib_callback_glue;
 
+import android.graphics.Color;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 import androidx.annotation.Nullable;
 
@@ -87,5 +89,11 @@ public class SupportLibWebChromeClientAdapter {
         if (mWebChromeClient == null) return false;
         return BoundaryInterfaceReflectionUtil.containsFeature(
                 mWebChromeClientSupportedFeatures, featureName);
+    }
+
+    public void onReceivedThemeColor(WebView webView, Color color) {
+        if (mWebChromeClient == null) return;
+        assert isFeatureAvailable(Features.THEME_COLOR_CALLBACK);
+        mWebChromeClient.onReceivedThemeColor(webView, color);
     }
 }

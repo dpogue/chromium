@@ -515,4 +515,7 @@ public class Features {
 
     // Navigation.getResponseHeaders
     public static final String NAVIGATION_GET_RESPONSE_HEADERS = "NAVIGATION_GET_RESPONSE_HEADERS";
+
+    // WebChromeClientCompat#onReceivedThemeColor
+    public static final String THEME_COLOR_CALLBACK = "THEME_COLOR_CALLBACK";
 }
