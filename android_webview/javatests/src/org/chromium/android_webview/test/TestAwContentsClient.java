@@ -24,6 +24,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.CallbackHelper;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.components.embedder_support.util.WebResourceResponseInfo;
+import org.chromium.content_public.browser.WebContentsObserver.ViewportFitType;
 import org.chromium.content_public.browser.test.util.TestCallbackHelperContainer.OnEvaluateJavaScriptResultHelper;
 import org.chromium.content_public.browser.test.util.TestCallbackHelperContainer.OnPageCommitVisibleHelper;
 import org.chromium.content_public.browser.test.util.TestCallbackHelperContainer.OnPageFinishedHelper;
@@ -71,6 +72,7 @@ public class TestAwContentsClient extends NullContentsClient {
     private final ShowFileChooserHelper mShowFileChooserHelper;
     private final OnFormResubmissionHelper mOnFormResubmissionHelper;
     private final OnReceivedThemeColorHelper mOnReceivedThemeColorHelper;
+    private final OnViewportFitChangedHelper mOnViewportFitChangedHelper;
 
     public TestAwContentsClient() {
         super(ThreadUtils.getUiThreadLooper());
@@ -98,6 +100,7 @@ public class TestAwContentsClient extends NullContentsClient {
         mRenderProcessGoneHelper = new RenderProcessGoneHelper();
         mShowFileChooserHelper = new ShowFileChooserHelper();
         mOnReceivedThemeColorHelper = new OnReceivedThemeColorHelper();
+        mOnViewportFitChangedHelper = new OnViewportFitChangedHelper();
         mAllowSslError = true;
     }
 
@@ -1116,5 +1119,29 @@ public class TestAwContentsClient extends NullContentsClient {
     public void onReceivedThemeColor(Color color) {
         if (TRACE) Log.i(TAG, "onReceivedThemeColor " + color.toString());
         mOnReceivedThemeColorHelper.notifyCalled(color);
+    }
+
+    /** Callback helper for onViewportFitChanged. */
+    public static class OnViewportFitChangedHelper extends CallbackHelper {
+        private @ViewportFitType int mViewportFit;
+
+        public void notifyCalled(@ViewportFitType int viewportFit) {
+            mViewportFit = viewportFit;
+            super.notifyCalled();
+        }
+
+        public @ViewportFitType int getViewportFit() {
+            return mViewportFit;
+        }
+    }
+
+    public OnViewportFitChangedHelper getOnViewportFitChangedHelper() {
+        return mOnViewportFitChangedHelper;
+    }
+
+    @Override
+    public void onViewportFitChanged(@ViewportFitType int viewportFit) {
+        if (TRACE) Log.i(TAG, "onViewportFitChanged " + viewportFit);
+        mOnViewportFitChangedHelper.notifyCalled(viewportFit);
     }
 }
